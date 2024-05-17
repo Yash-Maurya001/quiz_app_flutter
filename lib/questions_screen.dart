@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:quiz_app/models/quenstions_button.dart';
 import './data/questions.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
@@ -11,10 +13,17 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  var questionNumber = 3;
+  var currentQuestionIndex = 0;
+
+  void answserQuestion() {
+    setState(() {
+      currentQuestionIndex++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final questionNumber = questions[currentQuestionIndex];
     return Center(
       child: Container(
         margin: const EdgeInsets.all(8.0),
@@ -23,15 +32,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              questions[questionNumber].text,
-              style: const TextStyle(color: Colors.white, fontSize: 20),
+              questionNumber.text,
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(
               height: 30,
             ),
-            ...questions[questionNumber].suffeldList().map((e) {
-              return QuestionsButton(e, () {});
+            ...questionNumber.suffeldList().map((e) {
+              return QuestionsButton(e, answserQuestion);
             })
           ],
         ),
